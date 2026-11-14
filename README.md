@@ -23,7 +23,7 @@ Sonra `http://localhost:8000` adresini aç.
 
 ## Güncelleme yaparken
 
-`sw.js` içindeki `CACHE = 'niyet-v3'` değerini artır (`niyet-v4`, ...). Yoksa telefonlar eski dosyaları gösterir.
+Dosyalar internet varken her açılışta taze alınır, bu yüzden normalde ek bir şey gerekmez. `sw.js` içindeki `CACHE` sürümünü (`niyet-v4`) yalnızca önbellek mantığını değiştirdiğinde artır.
 
 ## Veri
 
