@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F7F2">
+  <meta name="description" content="Niyet: kaza namazı kayıt defteri">
+  <title>Niyet</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- İlk açılış -->
+  <main id="welcome" class="screen" hidden>
+    <section id="welcome-1" class="welcome-step">
+      <h1 class="brand">Niyet</h1>
+      <p class="slogan">Her ibadet niyetle başlar.</p>
+      <button id="btn-start" class="btn" type="button">Başla</button>
+    </section>
+    <section id="welcome-2" class="welcome-step" hidden>
+      <h2>Önceki toplam</h2>
+      <p class="lead">Kağıttaki toplamları vakit vakit yazın. Bilmiyorsanız boş bırakın, 0 sayılır.</p>
+      <div id="welcome-fields" class="fields"></div>
+      <p id="welcome-error" class="error" role="alert" hidden></p>
+      <button id="btn-welcome-save" class="btn" type="button">Kaydet ve başla</button>
+      <button id="btn-welcome-skip" class="btn link" type="button">Önceki kaydım yok, boş başla</button>
+    </section>
+  </main>
+
+  <!-- Ana ekran -->
+  <main id="app" class="screen" hidden>
+    <header class="topbar">
+      <h1 class="title">Niyet</h1>
+      <button id="btn-settings" class="icon-btn" type="button" aria-label="Ayarlar">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div id="storage-warn" class="notice warn" role="alert" hidden></div>
+
+    <div id="backup-banner" class="notice" hidden>
+      <span id="backup-text"></span>
+      <button id="btn-backup-now" class="btn small" type="button">Şimdi yedekle</button>
+    </div>
+
+    <section class="card duration" aria-label="Kılınan süre">
+      <p class="card-label">Şu ana kadar kılınan</p>
+      <p id="dur-main" class="dur-main">0 gün</p>
+      <p id="dur-rem" class="dur-rem" hidden></p>
+      <p id="dur-days" class="dur-days"></p>
+      <div id="totals" class="totals"></div>
+    </section>
+
+    <p id="streak" class="streak"></p>
+
+    <section class="card add" aria-label="Kayıt ekle">
+      <h2 class="card-title">Kaza ekle</h2>
+      <div class="segmented" role="group" aria-label="Hangi güne">
+        <button id="when-today" type="button" aria-pressed="true">Bugün</button>
+        <button id="when-yesterday" type="button" aria-pressed="false">Dün</button>
+      </div>
+      <label class="field-label" for="add-vakit">Vakit</label>
+      <select id="add-vakit" class="select"></select>
+      <label class="field-label" for="add-count">Kaç tane</label>
+      <div id="add-stepper"></div>
+      <p id="add-error" class="error" role="alert" hidden></p>
+      <button id="btn-add" class="btn" type="button">Ekle</button>
+    </section>
+
+    <section class="card cal" aria-label="Takvim">
+      <div class="cal-head">
+        <button id="cal-prev" class="icon-btn" type="button" aria-label="Önceki ay">&#8249;</button>
+        <h2 id="cal-title" class="cal-title"></h2>
+        <button id="cal-next" class="icon-btn" type="button" aria-label="Sonraki ay">&#8250;</button>
+      </div>
+      <div id="cal-week" class="cal-grid cal-week" aria-hidden="true"></div>
+      <div id="cal-grid" class="cal-grid"></div>
+    </section>
+
+    <section id="detail" class="card detail" hidden aria-live="polite">
+      <div class="detail-head">
+        <h2 id="detail-title" class="card-title"></h2>
+        <div class="detail-actions">
+          <button id="btn-edit" class="icon-btn" type="button" aria-label="Düzenle">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"></path>
+            </svg>
+          </button>
+          <button id="btn-close" class="icon-btn" type="button" aria-label="Kapat">&#10005;</button>
+        </div>
+      </div>
+      <div id="detail-view" class="detail-view"></div>
+      <div id="detail-edit" hidden>
+        <div id="detail-fields"></div>
+        <p id="detail-error" class="error" role="alert" hidden></p>
+        <div class="btn-row">
+          <button id="btn-save" class="btn" type="button">Kaydet</button>
+          <button id="btn-cancel" class="btn secondary" type="button">Vazgeç</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Ayarlar -->
+  <main id="settings" class="screen" hidden>
+    <header class="topbar">
+      <button id="btn-back" class="btn secondary small" type="button">&#8249; Geri</button>
+      <h1 class="title">Ayarlar</h1>
+    </header>
+
+    <section class="card">
+      <h2 class="card-title">Yedek</h2>
+      <p id="backup-info" class="lead"></p>
+      <button id="btn-backup" class="btn" type="button">Yedekle (dosya indir)</button>
+      <button id="btn-restore" class="btn secondary" type="button">Yedekten yükle</button>
+      <input id="restore-file" type="file" accept="application/json,.json" hidden>
+      <p id="settings-msg" class="msg" role="status" hidden></p>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">Önceki toplam</h2>
+      <p class="lead">Kağıttaki toplamlar. Yanlış yazıldıysa buradan düzeltin.</p>
+      <div id="settings-fields" class="fields"></div>
+      <p id="settings-error" class="error" role="alert" hidden></p>
+      <button id="btn-base-save" class="btn" type="button">Kaydet</button>
+    </section>
+  </main>
+
+  <!-- Geri al mesajı -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+    <span id="toast-text"></span>
+    <button id="toast-undo" class="toast-btn" type="button">Geri al</button>
+  </div>
+
+  <!-- Onay penceresi -->
+  <dialog id="confirm" class="dialog">
+    <p id="confirm-text"></p>
+    <div class="btn-row">
+      <button id="confirm-yes" class="btn" type="button">Devam et</button>
+      <button id="confirm-no" class="btn secondary" type="button">Vazgeç</button>
+    </div>
+  </dialog>
+
+  <noscript><p style="padding:16px">Niyet'in çalışması için JavaScript gerekir.</p></noscript>
+
+  <script src="calc.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
