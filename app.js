@@ -225,7 +225,10 @@
     var rem = $('dur-rem');
     rem.hidden = d.rem === 0;
     rem.textContent = '+ ' + d.rem + ' vakit';
-    $('dur-days').textContent = 'Toplam ' + d.totalDays + ' gün';
+    // Süre zaten sadece gün ise "Toplam N gün" aynı bilgiyi tekrarlar
+    var daysEl = $('dur-days');
+    daysEl.hidden = !(d.years || d.months);
+    daysEl.textContent = 'Toplam ' + d.totalDays + ' gün';
     var per = C.perVakitTotals(data);
     C.KEYS.forEach(function (k) { $('tot-' + k).textContent = per[k]; });
   }
@@ -233,7 +236,8 @@
   function renderStreak() {
     var cur = C.currentStreak(data.days, today());
     var best = Math.max(C.longestStreak(data.days), cur);
-    $('streak').textContent = 'Seri: ' + cur + ' gün · En uzun: ' + best + ' gün';
+    $('streak-cur').textContent = cur + ' gün';
+    $('streak-best').textContent = best + ' gün';
   }
 
   function renderBanner() {

@@ -132,7 +132,11 @@ h1, h2, p { margin: 0; }
 .tile-label { display: block; font-size: var(--fs-small); color: var(--muted); font-weight: 600; }
 .tile-num { display: block; font-size: var(--fs-num); font-weight: 800; }
 
-.streak { text-align: center; font-weight: 700; margin: 0 0 14px; }
+.streak-card .card-title { margin-bottom: 8px; }
+.streak-row { display: flex; justify-content: space-between; gap: 16px; }
+.streak-right { text-align: right; }
+.streak-label { font-size: var(--fs-small); color: var(--muted); font-weight: 600; }
+.streak-num { font-size: var(--fs-big); font-weight: 800; line-height: 1.2; }
 
 /* Ekle alanı */
 .field-label { display: block; font-size: var(--fs-small); color: var(--muted); font-weight: 600; margin: 12px 0 4px; }
