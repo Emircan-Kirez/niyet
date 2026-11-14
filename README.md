@@ -23,7 +23,7 @@ Sonra `http://localhost:8000` adresini aç.
 
 ## Güncelleme yaparken
 
-`sw.js` içindeki `CACHE = 'niyet-v2'` değerini artır (`niyet-v3`, ...). Yoksa telefonlar eski dosyaları gösterir.
+`sw.js` içindeki `CACHE = 'niyet-v3'` değerini artır (`niyet-v4`, ...). Yoksa telefonlar eski dosyaları gösterir.
 
 ## Veri
 

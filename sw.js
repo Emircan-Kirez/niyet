@@ -1,6 +1,6 @@
 /* Niyet service worker: dosyaları önbelleğe alır, internetsiz çalışır.
- * Dosyaları güncelleyince CACHE sürümünü artırın (niyet-v2, v3 ...). */
-var CACHE = 'niyet-v2';
+ * Dosyaları güncelleyince CACHE sürümünü artırın (niyet-v3, v4 ...). */
+var CACHE = 'niyet-v3';
 var ASSETS = ['./', 'index.html', 'style.css', 'calc.js', 'app.js', 'manifest.json', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function (e) {
